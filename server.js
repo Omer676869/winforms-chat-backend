@@ -1,17 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config(); // for SUPABASE_URL + SUPABASE_KEY
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const supabaseUrl = "https://mmppzofgrysuolikhxqo.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1tcHB6b2ZncnlzdW9saWtoeHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMzI3NTcsImV4cCI6MjA3MzgwODc1N30.eUx2QjwY2brQQ9_8z0NL6r9Sh5XT9VvXaJHv1vJMcmE";
+// Use environment variables
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Generate random 5-digit ID
+// Helper: random 5-digit ID
 function generateId() {
   return Math.floor(10000 + Math.random() * 90000).toString();
 }
@@ -67,4 +67,5 @@ app.get('/api/messages/private', async (req, res) => {
   res.json(data);
 });
 
-app.listen(3000, () => console.log('Server running'));
+// Export app for Vercel
+module.exports = app;
